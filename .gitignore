@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+
+# Environment variables
+*.env
+
+# IDEs
+.idea/
+.vscode/
+
+# Operating System Files
+.DS_Store
+.Trash/
+
+# Logs and temporary files
+*.log
+*.tmp
+tmp/
+
+# Gemini specific files
+GEMINI.md
