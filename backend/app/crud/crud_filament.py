@@ -4,14 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.models.base_models import FilamentSpool, FilamentStatus
-from app.schemas.filament import FilamentEnrichment # Assuming a create schema exists
-
-# Dummy schemas for CRUDBase generic
-from pydantic import BaseModel
-class FilamentCreate(BaseModel):
-    pass
-class FilamentUpdate(BaseModel):
-    pass
+from app.schemas.filament import FilamentCreate, FilamentUpdate, FilamentEnrichment
 
 class CRUDFilament(CRUDBase[FilamentSpool, FilamentCreate, FilamentUpdate]):
     def get_by_tray_id(self, db: Session, *, tray_id: str) -> Optional[FilamentSpool]:

@@ -31,8 +31,3 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return user
 
 user = CRUDUser(User)
-
-# Dummy UserUpdate for CRUDBase generic
-from pydantic import BaseModel
-class UserUpdate(BaseModel):
-    pass

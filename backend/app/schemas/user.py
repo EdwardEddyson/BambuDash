@@ -26,7 +26,7 @@ class UserUpdate(SQLModel):
 
 # Properties to return to client
 # This model is used for reading user data from the API
-class User(UserBase):
+class UserRead(UserBase):
     id: int
     role: UserRole
     created_at: datetime

@@ -17,8 +17,3 @@ class CRUDProject(CRUDBase[PrintProject, ProjectCreate, ProjectUpdate]):
         return db_obj
 
 project = CRUDProject(PrintProject)
-
-# Dummy ProjectUpdate for CRUDBase generic
-from pydantic import BaseModel
-class ProjectUpdate(BaseModel):
-    pass
