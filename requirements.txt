@@ -9,3 +9,4 @@ passlib[bcrypt]
 pydantic-settings
 paho-mqtt
 alembic
+python-multipart
