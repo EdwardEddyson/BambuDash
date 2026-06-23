@@ -15,6 +15,14 @@ class ProjectCreate(ProjectBase):
     # creator_id will be derived from the logged-in user's token
     pass
 
+# Properties to receive via API on project update
+# All fields are optional for partial updates
+class ProjectUpdate(SQLModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[ProjectStatus] = None
+    image_stl_url: Optional[str] = None
+
 # Properties to return to client
 class ProjectRead(ProjectBase):
     id: int
