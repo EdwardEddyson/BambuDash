@@ -11,9 +11,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the backend application code into the container
-COPY ./backend ./backend
+# This places the content of your local 'backend' directory into the container's /app directory
+COPY ./backend/ ./
 
-# Command to run the application
-# We use 0.0.0.0 to make the server accessible from outside the container.
-# The port is specified in the docker-compose.yml file.
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application from the new WORKDIR.
+# The app is now found at 'app.main' relative to the WORKDIR.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
