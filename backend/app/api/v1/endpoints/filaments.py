@@ -1,6 +1,6 @@
 # backend/app/api/v1/endpoints/filaments.py
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db

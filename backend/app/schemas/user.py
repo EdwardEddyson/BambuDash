@@ -16,6 +16,7 @@ class UserBase(SQLModel):
 # Properties to receive via API on user creation
 class UserCreate(UserBase):
     password: str
+    role: Optional[UserRole] = UserRole.USER
 
 # Properties to receive via API on user update
 # All fields are optional for partial updates
