@@ -21,8 +21,3 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
 
 
 order = CRUDOrder(Order)
-
-# Dummy OrderUpdate for CRUDBase generic
-from pydantic import BaseModel
-class OrderUpdate(BaseModel):
-    pass

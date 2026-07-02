@@ -10,6 +10,17 @@ class FilamentBase(SQLModel):
     remaining_weight_g: float
     status: FilamentStatus
 
+# Properties to receive on creation
+class FilamentCreate(FilamentBase):
+    pass
+
+# Properties to receive via API on update
+class FilamentUpdate(SQLModel):
+    material_type: Optional[str] = None
+    color_hex: Optional[str] = None
+    remaining_weight_g: Optional[float] = None
+    status: Optional[FilamentStatus] = None
+
 # Properties to return to client
 class FilamentRead(FilamentBase):
     id: int

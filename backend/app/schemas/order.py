@@ -34,6 +34,12 @@ class OrderBase(SQLModel):
 class OrderCreate(OrderBase):
     items: List[OrderItemCreate]
 
+# Properties to receive via API on order update
+# All fields are optional for partial updates
+class OrderUpdate(SQLModel):
+    store_name: Optional[str] = None
+    status: Optional[OrderStatus] = None
+
 class OrderRead(OrderBase):
     id: int
     order_date: str
