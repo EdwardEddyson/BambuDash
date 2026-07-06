@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "/api/v1").replace(/\/$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -37,3 +37,34 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Auth helper functions
+export const authApi = {
+  login: async (username: string, password: string) => {
+    const params = new URLSearchParams();
+    params.append("username", username);
+    params.append("password", password);
+    const response = await apiClient.post("/auth/login", params, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    return response.data; // Expected response shape: { access_token: string, token_type: string }
+  },
+
+  register: async (username: string, email: string, fullName: string, password: string) => {
+    const response = await apiClient.post("/users/", {
+      username,
+      email,
+      full_name: fullName,
+      password,
+    });
+    return response.data;
+  },
+
+  me: async () => {
+    const response = await apiClient.get("/users/me");
+    return response.data;
+  },
+};
+
