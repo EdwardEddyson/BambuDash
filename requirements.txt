@@ -11,3 +11,4 @@ pydantic-settings
 paho-mqtt
 alembic
 python-multipart
+httpx
