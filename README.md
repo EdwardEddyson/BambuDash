@@ -42,7 +42,10 @@ This is the easiest way to run BambuDash on a server.
     - **Repository URL**: Enter the URL of your Git repository.
     - **Compose path**: Ensure this is set to `docker-compose.yml`.
     - If your repository is private, enable **Authentication** and provide credentials.
-3.  **Deploy**: Click **Deploy the stack**. Portainer will pull the repository, build the backend image, and start both the database and backend services.
+3.  **Upload Environment File**:
+    - Under the environment settings in the stack screen, select the **Upload** option or paste your values.
+    - Create a local copy of [`.env.example`](file:///c:/Users/Edwar/Documents/dev/BambuDash/.env.example), rename it to `.env`, edit it with your secure credentials, and upload it.
+4.  **Deploy**: Click **Deploy the stack**. Portainer will pull the repository, build the backend image, and start both the database and backend services.
 
 To update the application, simply `git push` your new changes and click the **"Pull & redeploy"** button on the stack's detail page in Portainer.
 
@@ -53,29 +56,40 @@ To update the application, simply `git push` your new changes and click the **"P
     git clone <your-repository-url>
     cd BambuDash
     ```
-2.  **Start the Database**: Use the provided `docker-compose.yml` to start just the database service.
+2.  **Set up Environment Variables**:
+    - Copy the example environment file:
+      ```bash
+      cp .env.example .env
+      ```
+    - Open `.env` and adjust the variables (like database password and secrets).
+3.  **Start the Database**: Use the provided `docker-compose.yml` to start just the database service.
     ```bash
     docker-compose up -d db
     ```
-3.  **Set up Python Environment**:
+4.  **Set up Python Environment**:
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows: .\venv\Scripts\activate
     ```
-4.  **Install Dependencies**:
+5.  **Install Dependencies**:
     ```bash
     pip install -r requirements.txt
     ```
-5.  **Run the Backend**:
+6.  **Run the Backend**:
     ```bash
     uvicorn backend.app.main:app --reload
     ```
 
 ## ⚙️ Configuration
 
-Application settings (like database URL and JWT secrets) are managed via Pydantic Settings in `backend/app/core/config.py`.
+Application settings (like database URL, JWT secrets, and MQTT details) are configured via environment variables.
 
-These can be overridden with environment variables, which is the standard practice for Docker deployments. See the `environment` section in the `docker-compose.yml` file for examples.
+For local development and Docker deployment, copy the [`.env.example`](file:///c:/Users/Edwar/Documents/dev/BambuDash/.env.example) template to a file named `.env` and fill in the values:
+
+- **`POSTGRES_USER` / `POSTGRES_PASSWORD`**: Database credentials. The `DATABASE_URL` is automatically constructed from these variables in [docker-compose.yml](file:///c:/Users/Edwar/Documents/dev/BambuDash/docker-compose.yml).
+- **`SECRET_KEY`**: A secure string used to sign JWT access tokens.
+- **`MQTT_*`**: Credentials and settings for your local MQTT broker (for direct printer connection).
+- **`BAMBU_CLOUD_*`**: Credentials for the Bambu Cloud MQTT API.
 
 ## 📚 API Documentation
 
