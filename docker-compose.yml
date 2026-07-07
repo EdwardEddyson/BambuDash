@@ -8,11 +8,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=bambudash
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      # Expose the port to the host machine for potential direct access/debugging
       - "5432:5432"
     restart: always
 
@@ -22,13 +21,31 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # The DATABASE_URL must point to the 'db' service hostname
-      - DATABASE_URL=postgresql://postgres:password@db:5432/bambudash
-      # You can add other environment variables from core/config.py here
-      # - SECRET_KEY=your_production_secret_key
-      # - MQTT_BROKER_HOST=your_mqtt_broker_ip
+      - DATABASE_URL=${DATABASE_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - SECRET_KEY=${SECRET_KEY}
+      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST}
+      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - BAMBU_CLOUD_HOST=${BAMBU_CLOUD_HOST}
+      - BAMBU_CLOUD_PORT=${BAMBU_CLOUD_PORT}
+      - BAMBU_CLOUD_USERNAME=${BAMBU_CLOUD_USERNAME}
+      - BAMBU_CLOUD_PASSWORD=${BAMBU_CLOUD_PASSWORD}
     depends_on:
       - db
+    restart: always
+
+  frontend:
+    container_name: bambudash-frontend
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
     restart: always
 
 volumes:

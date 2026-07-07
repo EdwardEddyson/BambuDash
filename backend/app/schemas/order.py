@@ -1,5 +1,6 @@
 # backend/app/schemas/order.py
 from typing import Optional, List
+from datetime import datetime
 from sqlmodel import SQLModel
 from app.models.base_models import OrderStatus
 
@@ -40,9 +41,14 @@ class OrderUpdate(SQLModel):
     store_name: Optional[str] = None
     status: Optional[OrderStatus] = None
 
+class CartItemUpdate(SQLModel):
+    quantity: Optional[int] = None
+    price_per_unit: Optional[float] = None
+    splits: Optional[List[OrderItemSplitCreate]] = None
+
 class OrderRead(OrderBase):
     id: int
-    order_date: str
+    order_date: datetime
     status: OrderStatus
     creator_id: int
     items: List[OrderItemRead] = []

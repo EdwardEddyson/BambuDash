@@ -33,3 +33,11 @@ class ProjectFilamentRequirement(SQLModel):
     material_type: str
     color_hex: str
     estimated_consumption_g: float
+
+# Schema for the feasibility check response
+class ProjectFeasibility(SQLModel):
+    is_feasible: bool
+    project_id: int
+    required_weight_g: float
+    filament_spool_id: int
+    available_weight_g: float

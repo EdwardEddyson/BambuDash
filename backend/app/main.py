@@ -3,11 +3,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 
+from contextlib import asynccontextmanager
+
 from app.api.v1.api import api_router
 from app.core.config import settings
 from app.db.session import engine
 # Import all models here so that SQLModel can discover them
 from app.models import base_models
+from app.services.mqtt_service import mqtt_client
 
 
 def create_db_and_tables():
@@ -22,10 +25,27 @@ def create_db_and_tables():
     print("Database and tables created successfully.")
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup actions
+    create_db_and_tables()
+    try:
+        mqtt_client.run()
+    except Exception as e:
+        print(f"Failed to start MQTT client: {e}")
+    yield
+    # Shutdown actions
+    try:
+        mqtt_client.stop()
+    except Exception as e:
+        print(f"Failed to stop MQTT client: {e}")
+
+
 app = FastAPI(
     title="BambuDash API",
     description="Backend for the BambuDash 3D Print Management System.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # Set up CORS (Cross-Origin Resource Sharing)
@@ -39,12 +59,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-@app.on_event("startup")
-def on_startup():
-    """
-    Event handler that runs when the FastAPI application starts.
-    """
-    create_db_and_tables()
+
 
 # Include the main API router
 app.include_router(api_router, prefix=settings.API_V1_STR)

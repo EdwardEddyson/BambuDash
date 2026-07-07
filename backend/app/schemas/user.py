@@ -16,6 +16,7 @@ class UserBase(SQLModel):
 # Properties to receive via API on user creation
 class UserCreate(UserBase):
     password: str
+    role: Optional[UserRole] = UserRole.USER
 
 # Properties to receive via API on user update
 # All fields are optional for partial updates
@@ -34,4 +35,3 @@ class UserRead(UserBase):
 # Properties stored in DB
 # This is not a schema, but often kept with schemas.
 # However, our main model is in base_models.py, which is correct.
-
