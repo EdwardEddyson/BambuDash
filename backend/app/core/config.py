@@ -1,6 +1,6 @@
 # backend/app/core/config.py
 import os
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -14,9 +14,20 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
 
     # Database Settings
-    DATABASE_URL: str = Field(
-        default_factory=lambda: os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/bambudash")
-    )
+    DATABASE_URL: str = Field(default="")
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_db_url(cls, v: str) -> str:
+        if v and v.strip():
+            return v
+
+        user = os.getenv("POSTGRES_USER", "postgres")
+        password = os.getenv("POSTGRES_PASSWORD", "postgres")
+        db = os.getenv("POSTGRES_DB", "bambudash")
+        host = os.getenv("POSTGRES_HOST", "db")
+        port = os.getenv("POSTGRES_PORT", "5432")
+        return f"postgresql://{user}:{password}@{host}:{port}/{db}"
 
     # MQTT Settings
     MQTT_BROKER_HOST: str = Field(default_factory=lambda: os.getenv("MQTT_BROKER_HOST", ""))
