@@ -27,14 +27,14 @@ def fetch_bambu_store_product(product_slug: str) -> Optional[StoreProductInfo]:
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
-    
+
     try:
         response = httpx.get(url, headers=headers, timeout=10.0, follow_redirects=True)
         if response.status_code != 200:
             return None
-        
+
         data = response.json()
-        
+
         variants = []
         for v in data.get("variants", []):
             # Shopify prices are in cents (e.g. 2499 representing 24.99)
@@ -46,7 +46,7 @@ def fetch_bambu_store_product(product_slug: str) -> Optional[StoreProductInfo]:
                 available=v.get("available", False),
                 sku=v.get("sku")
             ))
-            
+
         return StoreProductInfo(
             title=data.get("title", ""),
             handle=data.get("handle", ""),

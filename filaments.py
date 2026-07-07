@@ -35,6 +35,6 @@ def enrich_filament(filament_id: int, filament_in: FilamentEnrichment, db: Sessi
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Filament spool not found.",
         )
-    
+
     enriched_filament = crud_filament.enrich(db=db, db_obj=db_filament, obj_in=filament_in)
     return enriched_filament

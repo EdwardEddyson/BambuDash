@@ -3,19 +3,19 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { authApi } from "@/lib/api-client";
-import { 
-  Printer, 
-  LayoutDashboard, 
-  Layers, 
-  Trello, 
-  ShoppingBag, 
-  BarChart3, 
-  Settings, 
-  LogOut, 
-  User, 
-  Bell, 
-  Search, 
-  Menu, 
+import {
+  Printer,
+  LayoutDashboard,
+  Layers,
+  Trello,
+  ShoppingBag,
+  BarChart3,
+  Settings,
+  LogOut,
+  User,
+  Bell,
+  Search,
+  Menu,
   X,
   CheckCircle2
 } from "lucide-react";
@@ -86,10 +86,10 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-[#0d0f12] text-slate-100 overflow-hidden font-sans">
-      
+
       {/* Mobile Sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           onClick={() => setSidebarOpen(false)}
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
         ></div>
@@ -112,7 +112,7 @@ export default function DashboardLayout({
             </span>
           </div>
           {/* Close button on mobile */}
-          <button 
+          <button
             onClick={() => setSidebarOpen(false)}
             className="rounded-lg p-1.5 hover:bg-slate-900 lg:hidden text-slate-400"
           >
@@ -161,7 +161,7 @@ export default function DashboardLayout({
               </div>
             </div>
             {/* Logout Trigger */}
-            <button 
+            <button
               onClick={handleLogout}
               className="rounded-lg p-2 text-slate-500 hover:bg-rose-500/10 hover:text-rose-400 transition-colors"
               title="Sign Out"
@@ -174,12 +174,12 @@ export default function DashboardLayout({
 
       {/* Main Container */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        
+
         {/* Top Header */}
         <header className="flex h-20 items-center justify-between border-b border-slate-900 px-6 lg:px-8 bg-[#0c0d10]/40 backdrop-blur-md">
           {/* Burger menu trigger on mobile */}
           <div className="flex items-center space-x-4 lg:space-x-0">
-            <button 
+            <button
               onClick={() => setSidebarOpen(true)}
               className="rounded-xl border border-slate-850 p-2 text-slate-400 hover:bg-slate-900 lg:hidden"
             >
@@ -201,7 +201,7 @@ export default function DashboardLayout({
 
           {/* Quick Info & Notifications */}
           <div className="flex items-center space-x-4">
-            
+
             {/* MQTT Live Connection Indicator */}
             <div className="flex items-center space-x-2 rounded-full border border-slate-900 bg-emerald-500/5 px-3.5 py-1.5 text-xs font-semibold text-emerald-400 shadow-sm">
               <span className="relative flex h-2 w-2">

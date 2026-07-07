@@ -41,7 +41,7 @@ def check_project_feasibility(
     project = crud_project.get(db, id=project_id)
     if not project:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Project not found.")
-    
+
     filament_spool = crud_filament.get(db, id=filament_spool_id)
     if not filament_spool:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Filament spool not found.")

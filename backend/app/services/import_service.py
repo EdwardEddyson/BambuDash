@@ -18,28 +18,28 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
     """
     contents = file.file.read().decode("utf-8")
     reader = csv.DictReader(io.StringIO(contents))
-    
+
     # Verify required headers are present
     required_headers = {"order_date", "store_name", "product_name", "quantity", "price_per_unit", "owner_username"}
     if not required_headers.issubset(set(reader.fieldnames or [])):
         raise ValueError(f"CSV is missing one or more required headers: {required_headers}")
-        
+
     orders_created = 0
     items_created = 0
     spools_created = 0
-    
+
     # Group rows by date and store to consolidate multiple items into single orders
     grouped_orders: Dict[tuple, List[dict]] = {}
     for row in reader:
         key = (row["order_date"].strip(), row["store_name"].strip())
         grouped_orders.setdefault(key, []).append(row)
-        
+
     for (date_str, store_name), rows in grouped_orders.items():
         try:
             order_date = datetime.strptime(date_str, "%Y-%m-%d")
         except ValueError:
             order_date = datetime.utcnow()
-            
+
         # Create Order
         db_order = Order(
             order_date=order_date,
@@ -50,17 +50,17 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
         db.add(db_order)
         db.flush()  # Retrieve db_order.id
         orders_created += 1
-        
+
         for row in rows:
             product_name = row["product_name"].strip()
             quantity = int(row["quantity"])
             price_per_unit = float(row["price_per_unit"])
             owner_username = row["owner_username"].strip()
-            
+
             # Query owner ID, default to current user if username not found
             owner = db.query(User).filter(User.username == owner_username).first()
             owner_id = owner.id if owner else current_user_id
-            
+
             # Create OrderItem
             db_item = OrderItem(
                 product_name=product_name,
@@ -71,7 +71,7 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
             db.add(db_item)
             db.flush()  # Retrieve db_item.id
             items_created += 1
-            
+
             # Create OrderItemSplit (100% ownership)
             db_split = OrderItemSplit(
                 order_item_id=db_item.id,
@@ -79,7 +79,7 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
                 ownership_percentage=1.0
             )
             db.add(db_split)
-            
+
             # Auto-create FilamentSpool records
             product_name_upper = product_name.upper()
             material_type = "PLA"
@@ -87,9 +87,9 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
                 if mat in product_name_upper:
                     material_type = mat
                     break
-                    
+
             color_hex = "#FFFFFF"
-            
+
             for _ in range(quantity):
                 spool = FilamentSpool(
                     material_type=material_type,
@@ -103,7 +103,7 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
                 )
                 db.add(spool)
                 spools_created += 1
-                
+
     db.commit()
     return {
         "orders_imported": orders_created,

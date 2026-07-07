@@ -35,4 +35,3 @@ class UserRead(UserBase):
 # Properties stored in DB
 # This is not a schema, but often kept with schemas.
 # However, our main model is in base_models.py, which is correct.
-

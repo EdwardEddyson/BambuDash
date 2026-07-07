@@ -39,7 +39,7 @@ def get_current_user(
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-        
+
     user = crud_user.get_by_username(db, username=token_data.username)
     if not user:
         raise HTTPException(

@@ -43,7 +43,7 @@ class CRUDFilament(CRUDBase[FilamentSpool, FilamentCreate, FilamentUpdate]):
             return self.create_from_mqtt(db=db, mqtt_data=mqtt_data)
 
 
-        
+
     def enrich(self, db: Session, *, db_obj: FilamentSpool, obj_in: FilamentEnrichment) -> FilamentSpool:
         """Updates a DRAFT spool with user-provided data."""
         db_obj.price = obj_in.price

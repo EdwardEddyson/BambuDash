@@ -44,7 +44,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                         f"Ownership percentages for item '{item_in.product_name}' must sum to exactly 1.0 (100%). "
                         f"Found: {total_percentage}"
                     )
-                
+
                 for split_in in item_in.splits:
                     db_split = OrderItemSplit(
                         order_item_id=db_item.id,
@@ -102,7 +102,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                 total_percentage = sum(s.ownership_percentage for s in item_in.splits)
                 if abs(total_percentage - 1.0) > 1e-4:
                     raise ValueError(f"Splits must sum to 1.0. Found: {total_percentage}")
-                
+
                 for split_in in item_in.splits:
                     db_split = OrderItemSplit(
                         order_item_id=existing_item.id,
@@ -110,7 +110,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                         ownership_percentage=split_in.ownership_percentage
                     )
                     db.add(db_split)
-            
+
             db.commit()
             db.refresh(existing_item)
             return existing_item
@@ -142,7 +142,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                         ownership_percentage=split_in.ownership_percentage
                     )
                     db.add(db_split)
-            
+
             db.commit()
             db.refresh(db_item)
             return db_item
@@ -154,7 +154,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
         db_item = db.query(OrderItem).filter(OrderItem.id == item_id).first()
         if not db_item:
             raise ValueError("Item not found.")
-        
+
         cart = db_item.order
         if cart.status != OrderStatus.PLANNING or cart.creator_id != creator_id:
             raise PermissionError("Cannot modify items in a submitted order or another user's cart.")
@@ -163,7 +163,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
             db_item.quantity = item_in.quantity
         if item_in.price_per_unit is not None:
             db_item.price_per_unit = item_in.price_per_unit
-        
+
         if item_in.splits is not None:
             db.query(OrderItemSplit).filter(OrderItemSplit.order_item_id == db_item.id).delete()
             if not item_in.splits:
@@ -184,7 +184,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                         ownership_percentage=split_in.ownership_percentage
                     )
                     db.add(db_split)
-        
+
         db.add(db_item)
         db.commit()
         db.refresh(db_item)
@@ -197,7 +197,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
         db_item = db.query(OrderItem).filter(OrderItem.id == item_id).first()
         if not db_item:
             raise ValueError("Item not found.")
-        
+
         cart = db_item.order
         if cart.status != OrderStatus.PLANNING or cart.creator_id != creator_id:
             raise PermissionError("Cannot remove items from a submitted order or another user's cart.")
@@ -216,7 +216,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
             raise ValueError("Only planning orders (carts) can be checked out.")
         if not cart.items:
             raise ValueError("Cannot checkout an empty shopping cart.")
-        
+
         cart.status = OrderStatus.ORDERED
         db.add(cart)
         db.commit()
@@ -230,12 +230,12 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
         """
         if order.status != OrderStatus.ORDERED:
             raise ValueError("Only ordered orders can be marked as delivered.")
-        
+
         from app.models.base_models import FilamentSpool, FilamentStatus, SpoolType
-        
+
         order.status = OrderStatus.DELIVERED
         db.add(order)
-        
+
         # Auto-create physical spools
         for item in order.items:
             product_name_upper = item.product_name.upper()
@@ -244,10 +244,10 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                 if mat in product_name_upper:
                     material_type = mat
                     break
-            
+
             # Simple color parser (e.g. searching for names) or default white
             color_hex = "#FFFFFF"
-            
+
             # Determine initial owner (if there is 100% split on a single user)
             owner_id = None
             if len(item.user_links) == 1 and item.user_links[0].ownership_percentage == 1.0:
@@ -266,7 +266,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                     order_item_id=item.id
                 )
                 db.add(spool)
-        
+
         db.commit()
         db.refresh(order)
         return order

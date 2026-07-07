@@ -120,7 +120,7 @@ def deliver_order(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Mark an order as 'DELIVERED'. This automatically converts all ordered items 
+    Mark an order as 'DELIVERED'. This automatically converts all ordered items
     into draft physical FilamentSpools in the database for users to enrich.
     """
     order = crud_order.get(db=db, id=order_id)

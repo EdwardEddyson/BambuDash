@@ -25,7 +25,7 @@ def enrich_filament_data(filament_id: int, enrichment_data: FilamentEnrichment, 
     db_filament = crud_filament.get(db, id=filament_id)
     if not db_filament:
         raise HTTPException(status_code=404, detail="Filament not found")
-    
+
     # Here you would call a service function to apply the logic
     # For now, we call crud directly
     updated_filament = crud_filament.enrich(db=db, db_obj=db_filament, obj_in=enrichment_data)

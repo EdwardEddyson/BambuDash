@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { apiClient } from "@/lib/api-client";
-import { 
-  Printer, 
-  Layers, 
-  Activity, 
-  DollarSign, 
-  Play, 
-  Plus, 
+import {
+  Printer,
+  Layers,
+  Activity,
+  DollarSign,
+  Play,
+  Plus,
   ShoppingBag,
   ExternalLink,
   ChevronRight,
@@ -81,7 +81,7 @@ export default function DashboardPage() {
         // Try fetching filaments to see if backend is responsive
         const filRes = await apiClient.get("/filaments/");
         const projRes = await apiClient.get("/projects/");
-        
+
         // Update stats if we receive successful responses
         setStats(prev => ({
           ...prev,
@@ -92,13 +92,13 @@ export default function DashboardPage() {
         console.log("Backend not fully initialized or using SQLite/empty DB. Falling back to high-fidelity mock data.");
       }
     };
-    
+
     fetchRealData();
   }, []);
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
-      
+
       {/* Welcome Banner */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
         <div>
@@ -109,7 +109,7 @@ export default function DashboardPage() {
             Real-time telemetry and management controls for your printer fleet.
           </p>
         </div>
-        
+
         {/* Quick action buttons */}
         <div className="flex flex-wrap gap-3">
           <button className="flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 px-4.5 py-2.5 text-xs font-semibold text-slate-200 hover:text-white transition-all cursor-pointer">
@@ -125,7 +125,7 @@ export default function DashboardPage() {
 
       {/* KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
+
         {/* KPI 1 */}
         <div className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 p-6 backdrop-blur-xl shadow-lg">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-emerald-500/5 blur-xl pointer-events-none"></div>
@@ -210,7 +210,7 @@ export default function DashboardPage() {
 
       {/* Main Grid: Telemetry & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Telemetry Panel */}
         <div className="lg:col-span-2 space-y-6">
           <div className="rounded-2xl border border-slate-900 bg-slate-950/20 p-6">
@@ -225,17 +225,17 @@ export default function DashboardPage() {
             {/* Printers Loop */}
             <div className="space-y-4">
               {printers.map((printer) => (
-                <div 
+                <div
                   key={printer.id}
                   className="rounded-xl border border-slate-900 bg-slate-950/60 p-5 transition-all hover:border-slate-800"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    
+
                     {/* Printer Info */}
                     <div className="flex items-start space-x-4">
                       <div className={`rounded-xl p-2.5 ${
-                        printer.status === "PRINTING" 
-                          ? "bg-emerald-500/10 text-emerald-400" 
+                        printer.status === "PRINTING"
+                          ? "bg-emerald-500/10 text-emerald-400"
                           : printer.status === "IDLE"
                           ? "bg-cyan-500/10 text-cyan-400"
                           : "bg-slate-900 text-slate-550"
@@ -248,8 +248,8 @@ export default function DashboardPage() {
                           <span className="text-xs font-semibold text-slate-500">{printer.model}</span>
                           <span className="h-1.5 w-1.5 rounded-full bg-slate-800"></span>
                           <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-2xs font-bold tracking-wide uppercase ${
-                            printer.status === "PRINTING" 
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                            printer.status === "PRINTING"
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                               : printer.status === "IDLE"
                               ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
                               : "bg-slate-900 text-slate-500 border border-slate-800"
@@ -287,11 +287,11 @@ export default function DashboardPage() {
                         <span className="text-slate-400 truncate max-w-[280px]">Job: {printer.jobName}</span>
                         <span className="text-slate-500">Est. Remaining: <strong className="text-emerald-400 font-semibold">{printer.timeLeft}</strong></span>
                       </div>
-                      
+
                       {/* Bar indicator */}
                       <div className="flex items-center space-x-4">
                         <div className="h-2 flex-1 rounded-full bg-slate-900 overflow-hidden">
-                          <div 
+                          <div
                             className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all duration-500"
                             style={{ width: `${printer.progress}%` }}
                           ></div>
@@ -338,7 +338,7 @@ export default function DashboardPage() {
 
             {/* View Details link */}
             <div className="border-t border-slate-900/60 pt-4 mt-6">
-              <a 
+              <a
                 href="/dashboard/analytics"
                 className="group flex items-center justify-between text-xs font-bold text-slate-400 hover:text-emerald-400 transition-colors"
               >
@@ -358,7 +358,7 @@ export default function DashboardPage() {
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Coordinate custom split cost calculations directly on orders, referencing ownership margins and pricing details.
             </p>
-            <a 
+            <a
               href="/dashboard/orders"
               className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 px-3.5 py-2 text-2xs font-semibold text-emerald-400 border border-slate-800"
             >

@@ -18,12 +18,12 @@ class MQTTClient:
         self.client = mqtt.Client()
         if username and password:
             self.client.username_pw_set(username, password)
-        
+
         self.host = host
         self.port = port
         self.is_cloud = is_cloud
         self.active_jobs_tracking = {}
-        
+
         # Configure SSL/TLS
         if port == 8883:
             if is_cloud:
@@ -77,7 +77,7 @@ class MQTTClient:
                             slot_id = tray.get("id")  # slot index, e.g., "0", "1", "2", "3"
                             if slot_id is None:
                                 continue
-                            
+
                             # Use tray_uuid if valid/RFID spool, else fallback to composite key
                             tray_uuid = tray.get("tray_uuid")
                             if not tray_uuid or tray_uuid == "0000000000000000" or len(tray_uuid) < 4:
@@ -88,7 +88,7 @@ class MQTTClient:
                             color_hex = f"#{color_rgba[:6]}"
 
                             material = tray.get("tray_type", "PLA")
-                            
+
                             # Remain is percentage (0-100). Default to 0 if negative.
                             remain_pct = tray.get("remain", 0.0)
                             if remain_pct < 0:
@@ -128,11 +128,11 @@ class MQTTClient:
                                 if project and project.status != ProjectStatus.PRINTING:
                                     project.status = ProjectStatus.PRINTING
                                     db.add(project)
-                            
+
                             elif gcode_state in ["FINISH", "FAILED", "CANCELLED"]:
                                 # Close the print job
                                 active_job.end_time = datetime.utcnow()
-                                
+
                                 start_weight = self.active_jobs_tracking.pop(tracking_key, spool.remaining_weight_g)
                                 # Spool weight should have been updated by AMS loop above or in previous packets
                                 current_weight = spool.remaining_weight_g
@@ -148,7 +148,7 @@ class MQTTClient:
                                     db.add(project)
 
                                 db.add(active_job)
-                            
+
                             db.commit()
 
             finally:

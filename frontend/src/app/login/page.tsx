@@ -47,7 +47,7 @@ export default function LoginPage() {
     } catch (err: any) {
       console.error(err);
       setError(
-        err.response?.data?.detail || 
+        err.response?.data?.detail ||
         "Authentication failed. Please check your connection and credentials."
       );
     } finally {
