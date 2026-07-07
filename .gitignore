@@ -7,8 +7,14 @@ __pycache__/
 venv/
 .venv/
 env/
-
-# Python tooling caches
+.venv*
+.webassets-cache
+.ipynb_checkpoints
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.cache/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -18,7 +24,11 @@ htmlcov/
 
 # Environment variables
 .env
-.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
 *.env
 !.env.example
 
@@ -28,6 +38,13 @@ node_modules/
 out/
 dist/
 build/
+.pnpm-store/
+.eslintcache
+.vercel
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Databases and local data
 *.sqlite3
@@ -37,15 +54,32 @@ build/
 # IDEs
 .idea/
 .vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Operating System Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
 .Trash/
 
 # Logs and temporary files
 *.log
 *.tmp
 tmp/
+
+# Local Pre-commit Hooks (Requested to remain local only)
+.pre-commit-config.yaml
 
 # Project-specific local notes
 gemini.md

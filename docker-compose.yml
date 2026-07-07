@@ -8,9 +8,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
-      - POSTGRES_DB=${POSTGRES_DB:-bambudash}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5432:5432"
     restart: always
@@ -21,18 +21,28 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-bambudash}}
-      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
-      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST:-}
-      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT:-1883}
-      - MQTT_USERNAME=${MQTT_USERNAME:-}
-      - MQTT_PASSWORD=${MQTT_PASSWORD:-}
-      - BAMBU_CLOUD_HOST=${BAMBU_CLOUD_HOST:-us.mqtt.bambulab.com}
-      - BAMBU_CLOUD_PORT=${BAMBU_CLOUD_PORT:-8883}
-      - BAMBU_CLOUD_USERNAME=${BAMBU_CLOUD_USERNAME:-}
-      - BAMBU_CLOUD_PASSWORD=${BAMBU_CLOUD_PASSWORD:-}
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST}
+      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - BAMBU_CLOUD_HOST=${BAMBU_CLOUD_HOST}
+      - BAMBU_CLOUD_PORT=${BAMBU_CLOUD_PORT}
+      - BAMBU_CLOUD_USERNAME=${BAMBU_CLOUD_USERNAME}
+      - BAMBU_CLOUD_PASSWORD=${BAMBU_CLOUD_PASSWORD}
     depends_on:
       - db
+    restart: always
+
+  frontend:
+    container_name: bambudash-frontend
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
     restart: always
 
 volumes:

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "/api/v1").replace(/\/$/, "");
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -67,4 +67,3 @@ export const authApi = {
     return response.data;
   },
 };
-

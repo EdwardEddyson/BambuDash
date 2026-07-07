@@ -22,6 +22,9 @@ BambuDash is a self-hosted management system for Bambu Lab 3D printers, designed
 
 ## 🚀 Getting Started
 
+> [!IMPORTANT]
+> **Security Warning (Fail-Secure)**: The Docker deployment configuration is secure by default. You **MUST** create a `.env` file by copying `.env.example` and configuring your own secure passwords and keys before launching. Starting the containers via `docker-compose up` without a properly configured `.env` file will result in an immediate startup failure.
+
 There are two ways to get BambuDash running: via Portainer (recommended for servers) or locally for development.
 
 ### Prerequisites
