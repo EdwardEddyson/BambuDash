@@ -57,6 +57,11 @@ def import_orders_from_csv(db: Session, file: UploadFile, current_user_id: int) 
             price_per_unit = float(row["price_per_unit"])
             owner_username = row["owner_username"].strip()
 
+            if quantity < 0:
+                raise ValueError("Quantity must be non-negative.")
+            if price_per_unit < 0:
+                raise ValueError("Price per unit must be non-negative.")
+
             # Query owner ID, default to current user if username not found
             owner = db.query(User).filter(User.username == owner_username).first()
             owner_id = owner.id if owner else current_user_id
