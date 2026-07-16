@@ -23,6 +23,7 @@ class MQTTClient:
         self.port = port
         self.is_cloud = is_cloud
         self.active_jobs_tracking = {}
+        self.active_trays = {}
 
         # Configure SSL/TLS
         if port == 8883:
@@ -70,6 +71,8 @@ class MQTTClient:
                 ams_data = print_data.get("ams", {})
                 if ams_data:
                     ams_list = ams_data.get("ams", [])
+                    current_tray_ids = set()
+
                     for ams_unit in ams_list:
                         ams_id = ams_unit.get("id", "0")
                         trays = ams_unit.get("tray", [])
@@ -78,10 +81,28 @@ class MQTTClient:
                             if slot_id is None:
                                 continue
 
+                            is_empty = False
+                            if "tray_type" in tray and tray["tray_type"] == "":
+                                is_empty = True
+                            elif not tray.get("tray_type") and not tray.get("tray_color"):
+                                is_empty = True
+                            elif tray.get("empty") is True:
+                                is_empty = True
+
                             # Use tray_uuid if valid/RFID spool, else fallback to composite key
                             tray_uuid = tray.get("tray_uuid")
                             if not tray_uuid or tray_uuid == "0000000000000000" or len(tray_uuid) < 4:
                                 tray_uuid = f"{serial_number}_ams{ams_id}_slot{slot_id}"
+
+                            if is_empty:
+                                fallback_id = f"{serial_number}_ams{ams_id}_slot{slot_id}"
+                                fallback_spool = db.query(FilamentSpool).filter(FilamentSpool.bambu_tray_id == fallback_id).first()
+                                if fallback_spool:
+                                    fallback_spool.bambu_tray_id = None
+                                    db.add(fallback_spool)
+                                continue
+
+                            current_tray_ids.add(tray_uuid)
 
                             # Color format is "RRGGBBAA" hex code
                             color_rgba = tray.get("tray_color", "FFFFFFFF")
@@ -102,6 +123,16 @@ class MQTTClient:
                                 "weight": weight_g
                             }
                             crud_filament.get_or_create_from_mqtt(db=db, mqtt_data=mqtt_data)
+
+                    if serial_number in self.active_trays:
+                        removed_tray_ids = self.active_trays[serial_number] - current_tray_ids
+                        for r_tray_id in removed_tray_ids:
+                            spool = db.query(FilamentSpool).filter(FilamentSpool.bambu_tray_id == r_tray_id).first()
+                            if spool:
+                                spool.bambu_tray_id = None
+                                db.add(spool)
+                    
+                    self.active_trays[serial_number] = current_tray_ids
 
                 # 2. Print status updates (gcode_state)
                 gcode_state = print_data.get("gcode_state")
