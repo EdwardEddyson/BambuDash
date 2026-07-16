@@ -9,6 +9,7 @@ class ProjectBase(SQLModel):
     description: Optional[str] = None
     status: ProjectStatus = ProjectStatus.IDEA
     image_stl_url: Optional[str] = None
+    printer_id: Optional[int] = None
 
 # Properties to receive on creation
 class ProjectCreate(ProjectBase):
@@ -22,6 +23,7 @@ class ProjectUpdate(SQLModel):
     description: Optional[str] = None
     status: Optional[ProjectStatus] = None
     image_stl_url: Optional[str] = None
+    printer_id: Optional[int] = None
 
 # Properties to return to client
 class ProjectRead(ProjectBase):

@@ -99,6 +99,7 @@ class Printer(SQLModel, table=True):
     location: Optional[str] = Field(default=None, nullable=True, description="Physical location")
 
     print_jobs: List["PrintJob"] = Relationship(back_populates="printer")
+    projects: List["PrintProject"] = Relationship(back_populates="printer")
 
 class FilamentSpool(SQLModel, table=True):
     """
@@ -148,6 +149,10 @@ class PrintProject(SQLModel, table=True):
 
     creator_id: int = Field(foreign_key="user.id")
     creator: User = Relationship(back_populates="projects_created")
+
+    # Optional association with a printer
+    printer_id: Optional[int] = Field(default=None, foreign_key="printer.id")
+    printer: Optional[Printer] = Relationship(back_populates="projects")
 
     # M2M relationship for filament requirements
     filament_requirements: List[ProjectFilamentRequirement] = Relationship(back_populates="project")
