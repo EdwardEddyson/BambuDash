@@ -56,4 +56,26 @@ class CRUDFilament(CRUDBase[FilamentSpool, FilamentCreate, FilamentUpdate]):
         return db_obj
 
 
+
+    def assign_ams(self, db: Session, *, db_obj: FilamentSpool, bambu_tray_id: str) -> FilamentSpool:
+        """Assign a spool to an AMS tray, evicting any other spool in that tray."""
+        existing = self.get_by_tray_id(db, tray_id=bambu_tray_id)
+        if existing and existing.id != db_obj.id:
+            existing.bambu_tray_id = None
+            db.add(existing)
+        db_obj.bambu_tray_id = bambu_tray_id
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove_ams(self, db: Session, *, db_obj: FilamentSpool) -> FilamentSpool:
+        """Remove a spool from its AMS tray."""
+        db_obj.bambu_tray_id = None
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
 filament = CRUDFilament(FilamentSpool)
+
