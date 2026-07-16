@@ -1,5 +1,6 @@
 # backend/app/schemas/filament.py
 from typing import Optional
+from datetime import datetime
 from sqlmodel import SQLModel
 from app.models.base_models import FilamentStatus, SpoolType
 
@@ -42,7 +43,21 @@ class FilamentEnrichment(SQLModel):
     price: float
     owner_id: int
     spool_type: SpoolType = SpoolType.SPOOL
+
+class UnlinkedMatchResponse(SQLModel):
+    id: int
+    material_type: str
+    color_hex: str
+    remaining_weight_g: float
+    status: FilamentStatus
+    price: Optional[float] = None
+    spool_type: SpoolType
+    owner_id: Optional[int] = None
+    order_item_id: Optional[int] = None
     location: Optional[str] = None
     product_slug: Optional[str] = None
     sku: Optional[str] = None
     variant_title: Optional[str] = None
+    order_id: Optional[int] = None
+    order_date: Optional[datetime] = None
+    owner_username: Optional[str] = None
