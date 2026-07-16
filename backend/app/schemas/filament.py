@@ -34,3 +34,7 @@ class FilamentEnrichment(SQLModel):
     price: float
     owner_id: int
     spool_type: SpoolType = SpoolType.SPOOL
+
+# Properties for assigning to AMS
+class FilamentAssignAMS(SQLModel):
+    bambu_tray_id: str
