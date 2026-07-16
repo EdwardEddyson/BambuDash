@@ -48,7 +48,7 @@ class OrderItemSplit(SQLModel, table=True):
     """
     order_item_id: int = Field(foreign_key="orderitem.id", primary_key=True)
     user_id: int = Field(foreign_key="user.id", primary_key=True)
-    ownership_percentage: float = Field(default=1.0, description="Ownership share, e.g., 0.5 for 50%")
+    ownership_percentage: float = Field(default=1.0, ge=0.0, le=1.0, description="Ownership share, e.g., 0.5 for 50%")
 
     # Relationships to fetch the actual objects
     order_item: "OrderItem" = Relationship(back_populates="user_links")
@@ -96,6 +96,7 @@ class Printer(SQLModel, table=True):
     type: str = Field(description="e.g., 'P1S', 'X1C'")
     # For local MQTT or cloud API connection
     connection_info: str = Field(description="IP Address for local, device_id for cloud etc.")
+    location: Optional[str] = Field(default=None, nullable=True, description="Physical location")
 
     print_jobs: List["PrintJob"] = Relationship(back_populates="printer")
 
@@ -125,6 +126,11 @@ class FilamentSpool(SQLModel, table=True):
     # Link to the order item this spool came from (optional)
     order_item_id: Optional[int] = Field(default=None, foreign_key="orderitem.id")
     order_item: Optional["OrderItem"] = Relationship(back_populates="resulting_spools")
+
+    location: Optional[str] = Field(default=None, nullable=True, description="Physical location")
+    product_slug: Optional[str] = Field(default=None, nullable=True)
+    sku: Optional[str] = Field(default=None, nullable=True)
+    variant_title: Optional[str] = Field(default=None, nullable=True)
 
     # A spool can be used in many print jobs
     print_jobs: List["PrintJob"] = Relationship(back_populates="filament_spool_used")
@@ -193,6 +199,9 @@ class OrderItem(SQLModel, table=True):
     product_name: str
     quantity: int = Field(default=1)
     price_per_unit: float
+    product_slug: Optional[str] = Field(default=None, nullable=True)
+    sku: Optional[str] = Field(default=None, nullable=True)
+    variant_title: Optional[str] = Field(default=None, nullable=True)
 
     order_id: int = Field(foreign_key="order.id")
     order: Order = Relationship(back_populates="items")
