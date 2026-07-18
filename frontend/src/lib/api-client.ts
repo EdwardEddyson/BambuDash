@@ -97,3 +97,10 @@ export const makerworldApi = {
     return response.data;
   }
 };
+
+export const storeApi = {
+  lookup: async (productSlug: string) => {
+    const response = await apiClient.get(`/store/lookup/${productSlug}`);
+    return response.data;
+  }
+};
