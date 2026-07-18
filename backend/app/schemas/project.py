@@ -24,12 +24,6 @@ class ProjectUpdate(SQLModel):
     status: Optional[ProjectStatus] = None
     image_stl_url: Optional[str] = None
 
-# Properties to return to client
-class ProjectRead(ProjectBase):
-    id: int
-    creator_id: int
-
-# You might also want schemas for filament requirements
 class ProjectFilamentRequirementCreate(SQLModel):
     material_type: str = Field(..., min_length=1)
     color_hex: str = Field(..., description="HTML hex color code, e.g., '#FFFFFF'")
@@ -43,6 +37,12 @@ class ProjectFilamentRequirementCreate(SQLModel):
 
 class ProjectFilamentRequirementRead(ProjectFilamentRequirementCreate):
     project_id: int
+
+# Properties to return to client
+class ProjectRead(ProjectBase):
+    id: int
+    creator_id: int
+    filament_requirements: List[ProjectFilamentRequirementRead] = []
 
 # Schema for the feasibility check response
 class ProjectFeasibility(SQLModel):
