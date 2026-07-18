@@ -64,7 +64,7 @@ def check_project_feasibility(
     if not filament_spool:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Filament spool not found.")
 
-    required_weight = sum(req.estimated_consumption_g for req in project.requirements) if project.requirements else 0
+    required_weight = sum(req.estimated_consumption_g for req in project.filament_requirements) if project.filament_requirements else 0
     is_feasible = filament_spool.remaining_weight_g >= required_weight
 
     return ProjectFeasibility(
