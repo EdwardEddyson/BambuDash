@@ -6,6 +6,30 @@ from app.crud.base import CRUDBase
 from app.models.base_models import Order, OrderItem, OrderItemSplit, OrderStatus
 from app.schemas.order import OrderCreate, OrderUpdate, OrderItemCreate, CartItemUpdate
 
+def parse_color_hex(text: str) -> str:
+    import re
+    color_map = {
+        "black": "#000000",
+        "white": "#FFFFFF",
+        "red": "#FF0000",
+        "green": "#00FF00",
+        "blue": "#0000FF",
+        "yellow": "#FFFF00",
+        "orange": "#FFA500",
+        "grey": "#808080",
+        "gray": "#808080",
+        "silver": "#C0C0C0",
+        "gold": "#FFD700",
+        "purple": "#800080",
+        "pink": "#FFC0CB",
+        "brown": "#A52A2A"
+    }
+    text_lower = text.lower()
+    for color, hex_code in color_map.items():
+        if re.search(r'\b' + re.escape(color) + r'\b', text_lower):
+            return hex_code
+    return "#FFFFFF"
+
 class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
     def create_with_creator(self, db: Session, *, obj_in: OrderCreate, creator_id: int) -> Order:
         # Create order in PLANNING status
@@ -23,7 +47,10 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                 product_name=item_in.product_name,
                 quantity=item_in.quantity,
                 price_per_unit=item_in.price_per_unit,
-                order_id=db_obj.id
+                order_id=db_obj.id,
+                product_slug=item_in.product_slug,
+                sku=item_in.sku,
+                variant_title=item_in.variant_title
             )
             db.add(db_item)
             db.flush()  # Populate db_item.id
@@ -119,7 +146,10 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                 product_name=item_in.product_name,
                 quantity=item_in.quantity,
                 price_per_unit=item_in.price_per_unit,
-                order_id=cart.id
+                order_id=cart.id,
+                product_slug=item_in.product_slug,
+                sku=item_in.sku,
+                variant_title=item_in.variant_title
             )
             db.add(db_item)
             db.flush()
@@ -163,6 +193,12 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
             db_item.quantity = item_in.quantity
         if item_in.price_per_unit is not None:
             db_item.price_per_unit = item_in.price_per_unit
+        if item_in.product_slug is not None:
+            db_item.product_slug = item_in.product_slug
+        if item_in.sku is not None:
+            db_item.sku = item_in.sku
+        if item_in.variant_title is not None:
+            db_item.variant_title = item_in.variant_title
 
         if item_in.splits is not None:
             db.query(OrderItemSplit).filter(OrderItemSplit.order_item_id == db_item.id).delete()
@@ -226,7 +262,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
     def deliver_order(self, db: Session, *, order: Order) -> Order:
         """
         Marks an order as delivered and automatically generates a FilamentSpool DRAFT
-        in the database for each unit of items in the order.
+        in the database for each unit of items in the order using split billing allocation.
         """
         if order.status != OrderStatus.ORDERED:
             raise ValueError("Only ordered orders can be marked as delivered.")
@@ -240,21 +276,30 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
         for item in order.items:
             product_name_upper = item.product_name.upper()
             material_type = "PLA"  # Default fallback
-            for mat in ["PLA", "PETG", "ABS", "ASA", "TPU"]:
+            for mat in ["PLA", "PETG", "ABS", "ASA", "TPU", "PA", "PC", "PET", "PVA"]:
                 if mat in product_name_upper:
                     material_type = mat
                     break
 
             # Simple color parser (e.g. searching for names) or default white
-            color_hex = "#FFFFFF"
+            color_hex = parse_color_hex((item.variant_title or "") + " " + item.product_name)
 
-            # Determine initial owner (if there is 100% split on a single user)
-            owner_id = None
-            if len(item.user_links) == 1 and item.user_links[0].ownership_percentage == 1.0:
-                owner_id = item.user_links[0].user_id
+            # Sort splits by user_id to ensure deterministic order.
+            sorted_splits = sorted(item.user_links, key=lambda s: s.user_id)
+            allocated_owners = []
+            for split in sorted_splits:
+                num_spools = int(item.quantity * split.ownership_percentage + 1e-9)
+                remaining_qty = max(0, item.quantity - len(allocated_owners))
+                num_spools = min(num_spools, remaining_qty)
+                num_spools = max(0, num_spools)
+                allocated_owners.extend([split.user_id] * num_spools)
+
+            # Pad remaining spools with None (communal)
+            while len(allocated_owners) < item.quantity:
+                allocated_owners.append(None)
 
             # Create a spool for each unit
-            for _ in range(item.quantity):
+            for owner_id in allocated_owners:
                 spool = FilamentSpool(
                     material_type=material_type,
                     color_hex=color_hex,
@@ -263,7 +308,10 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
                     spool_type=SpoolType.SPOOL,
                     status=FilamentStatus.DRAFT,  # Needs enrichment
                     owner_id=owner_id,
-                    order_item_id=item.id
+                    order_item_id=item.id,
+                    product_slug=item.product_slug,
+                    sku=item.sku,
+                    variant_title=item.variant_title
                 )
                 db.add(spool)
 

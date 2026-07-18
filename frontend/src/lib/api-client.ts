@@ -67,3 +67,33 @@ export const authApi = {
     return response.data;
   },
 };
+
+export const projectsApi = {
+  getAll: async () => {
+    const response = await apiClient.get("/projects/");
+    return response.data;
+  },
+  create: async (data: { name: string; description?: string; status?: string; image_stl_url?: string }) => {
+    const response = await apiClient.post("/projects/", data);
+    return response.data;
+  },
+  update: async (id: number, data: { name?: string; description?: string; status?: string; image_stl_url?: string }) => {
+    const response = await apiClient.patch(`/projects/${id}`, data);
+    return response.data;
+  },
+  addRequirement: async (projectId: number, requirement: { material_type: string; color_hex: string; estimated_consumption_g: number }) => {
+    const response = await apiClient.post(`/projects/${projectId}/requirements`, requirement);
+    return response.data;
+  },
+  checkFeasibility: async (projectId: number, spoolId: number) => {
+    const response = await apiClient.get(`/projects/${projectId}/feasibility?filament_spool_id=${spoolId}`);
+    return response.data;
+  }
+};
+
+export const makerworldApi = {
+  search: async (query: string) => {
+    const response = await apiClient.get(`/makerworld/search?q=${encodeURIComponent(query)}`);
+    return response.data;
+  }
+};
