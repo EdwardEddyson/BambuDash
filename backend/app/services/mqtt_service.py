@@ -131,8 +131,9 @@ class MQTTClient:
                             if spool:
                                 spool.bambu_tray_id = None
                                 db.add(spool)
-                    
+
                     self.active_trays[serial_number] = current_tray_ids
+                    db.commit()
 
                 # 2. Print status updates (gcode_state)
                 gcode_state = print_data.get("gcode_state")
