@@ -1,6 +1,7 @@
-# backend/app/schemas/project.py
 from typing import Optional, List
-from sqlmodel import SQLModel
+import re
+from pydantic import validator
+from sqlmodel import SQLModel, Field
 from app.models.base_models import ProjectStatus
 
 # Shared properties
@@ -29,10 +30,19 @@ class ProjectRead(ProjectBase):
     creator_id: int
 
 # You might also want schemas for filament requirements
-class ProjectFilamentRequirement(SQLModel):
-    material_type: str
-    color_hex: str
-    estimated_consumption_g: float
+class ProjectFilamentRequirementCreate(SQLModel):
+    material_type: str = Field(..., min_length=1)
+    color_hex: str = Field(..., description="HTML hex color code, e.g., '#FFFFFF'")
+    estimated_consumption_g: float = Field(..., gt=0, description="Must be positive")
+
+    @validator('color_hex')
+    def validate_color_hex(cls, v):
+        if not re.match(r"^#[0-9a-fA-F]{6}$", v):
+            raise ValueError('color_hex must be a valid hex color code like #FFFFFF')
+        return v
+
+class ProjectFilamentRequirementRead(ProjectFilamentRequirementCreate):
+    project_id: int
 
 # Schema for the feasibility check response
 class ProjectFeasibility(SQLModel):
