@@ -1,0 +1,25 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "login": {
+    "title": "Login",
+    "register": "Register"
+  },
+  "navigation": {
+    "sidebar": "Sidebar",
+    "header": "Header",
+    "status": "Status"
+  },
+  "dashboard": {
+    "kpi_cards": "KPI Cards",
+    "sections": "Sections",
+    "telemetry": "Telemetry"
+  },
+  "settings": {
+    "title": "Settings"
+  }
+}

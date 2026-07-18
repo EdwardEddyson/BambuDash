@@ -1,0 +1,25 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "processing": "Wird verarbeitet...",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "login": {
+    "title": "Anmelden",
+    "register": "Registrieren"
+  },
+  "navigation": {
+    "sidebar": "Seitenleiste",
+    "header": "Kopfzeile",
+    "status": "Status"
+  },
+  "dashboard": {
+    "kpi_cards": "KPI Karten",
+    "sections": "Abschnitte",
+    "telemetry": "Telemetrie"
+  },
+  "settings": {
+    "title": "Einstellungen"
+  }
+}
