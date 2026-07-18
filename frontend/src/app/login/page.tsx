@@ -2,10 +2,13 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { authApi } from "@/lib/api-client";
 import { Lock, User, Mail, Printer, AlertCircle, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
+  const t = useTranslations("login");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -29,14 +32,14 @@ export default function LoginPage() {
         // Login flow
         const data = await authApi.login(username, password);
         localStorage.setItem("token", data.access_token);
-        setSuccess("Login successful! Redirecting...");
+        setSuccess(t("loginSuccess"));
         setTimeout(() => {
           router.push("/dashboard");
         }, 1000);
       } else {
         // Registration flow
         await authApi.register(username, email, fullName, password);
-        setSuccess("Registration successful! Logging you in...");
+        setSuccess(t("registerSuccess"));
         // Auto-login after registration
         const loginData = await authApi.login(username, password);
         localStorage.setItem("token", loginData.access_token);
@@ -48,7 +51,7 @@ export default function LoginPage() {
       console.error(err);
       setError(
         err.response?.data?.detail ||
-        "Authentication failed. Please check your connection and credentials."
+        t("authFailed")
       );
     } finally {
       setLoading(false);
@@ -71,10 +74,10 @@ export default function LoginPage() {
           </div>
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              BambuDash
+              {t("brandName")}
             </h1>
             <p className="mt-2 text-sm text-slate-400">
-              Manage your 3D printing workspace and split-billing
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -95,7 +98,7 @@ export default function LoginPage() {
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              Sign In
+              {t("signIn")}
             </button>
             <button
               onClick={() => {
@@ -109,7 +112,7 @@ export default function LoginPage() {
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              Register
+              {t("register")}
             </button>
           </div>
 
@@ -134,7 +137,7 @@ export default function LoginPage() {
               <>
                 <div className="space-y-1.5">
                   <label htmlFor="fullName" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Full Name
+                    {t("fullName")}
                   </label>
                   <div className="relative rounded-xl border border-slate-800 bg-slate-950 transition-all focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/30">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -144,7 +147,7 @@ export default function LoginPage() {
                       id="fullName"
                       type="text"
                       required
-                      placeholder="e.g. John Doe"
+                      placeholder={t("fullNamePlaceholder")}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       className="w-full bg-transparent py-3 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-600 outline-none"
@@ -154,7 +157,7 @@ export default function LoginPage() {
 
                 <div className="space-y-1.5">
                   <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Email Address
+                    {t("emailAddress")}
                   </label>
                   <div className="relative rounded-xl border border-slate-800 bg-slate-950 transition-all focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/30">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -164,7 +167,7 @@ export default function LoginPage() {
                       id="email"
                       type="email"
                       required
-                      placeholder="e.g. john@example.com"
+                      placeholder={t("emailPlaceholder")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-transparent py-3 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-600 outline-none"
@@ -176,7 +179,7 @@ export default function LoginPage() {
 
             <div className="space-y-1.5">
               <label htmlFor="username" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Username
+                {t("username")}
               </label>
               <div className="relative rounded-xl border border-slate-800 bg-slate-950 transition-all focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/30">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -186,7 +189,7 @@ export default function LoginPage() {
                   id="username"
                   type="text"
                   required
-                  placeholder="e.g. johndoe"
+                  placeholder={t("usernamePlaceholder")}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full bg-transparent py-3 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-600 outline-none"
@@ -196,7 +199,7 @@ export default function LoginPage() {
 
             <div className="space-y-1.5">
               <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Password
+                {t("authCodeText")}
               </label>
               <div className="relative rounded-xl border border-slate-800 bg-slate-950 transition-all focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/30">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -206,7 +209,7 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   required
-                  placeholder="••••••••"
+                  placeholder={t("authCodePlaceholder")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-transparent py-3 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-600 outline-none"
@@ -223,12 +226,12 @@ export default function LoginPage() {
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                  Processing...
+                  {tCommon("processing")}
                 </span>
               ) : isLogin ? (
-                "Sign In"
+                t("signIn")
               ) : (
-                "Create Account"
+                t("createAccount")
               )}
             </button>
           </form>
@@ -236,8 +239,8 @@ export default function LoginPage() {
 
         {/* Demo Mode / Quick Sandbox Credentials */}
         <div className="text-center text-xs text-slate-600 bg-slate-900/10 p-4 border border-slate-850 rounded-xl">
-          <p className="font-semibold text-slate-500 mb-1">Sandbox Demo Credentials</p>
-          <p>Register a new user or login to check the UI.</p>
+          <p className="font-semibold text-slate-500 mb-1">{t("demoTitle")}</p>
+          <p>{t("demoText")}</p>
         </div>
       </div>
     </div>

@@ -3,23 +3,84 @@
     "loading": "Loading...",
     "processing": "Processing...",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loadingApp": "Loading BambuDash..."
+  },
+  "metadata": {
+    "title": "BambuDash - 3D Printer Management",
+    "description": "Comprehensive management system for Bambu Lab 3D printers."
   },
   "login": {
     "title": "Login",
-    "register": "Register"
+    "register": "Register",
+    "authFailed": "Authentication failed. Please check your connection and credentials.",
+    "loginSuccess": "Login successful! Redirecting...",
+    "registerSuccess": "Registration successful! Logging you in...",
+    "brandName": "BambuDash",
+    "subtitle": "Manage your 3D printing workspace and split-billing",
+    "signIn": "Sign In",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. John Doe",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "e.g. john@example.com",
+    "username": "Username",
+    "usernamePlaceholder": "e.g. johndoe",
+    "authCodeText": "Passcode",
+    "authCodePlaceholder": "••••••••",
+    "createAccount": "Create Account",
+    "demoTitle": "Sandbox Demo Credentials",
+    "demoText": "Register a new user or login to check the UI."
   },
   "navigation": {
     "sidebar": "Sidebar",
     "header": "Header",
-    "status": "Status"
+    "status": "Status",
+    "navOverview": "Overview",
+    "navInventory": "Filament Inventory",
+    "navProjects": "Project Board",
+    "navOrders": "Orders & Cart",
+    "navAnalytics": "Analytics",
+    "navSettings": "Settings",
+    "restoringSession": "Restoring secure session...",
+    "brandName": "BambuDash",
+    "guestUser": "Guest User",
+    "userAccount": "User Account",
+    "signOut": "Sign Out",
+    "searchPlaceholder": "Search models, projects...",
+    "mqttConnected": "MQTT: Connected",
+    "fleetOnline": "Fleet Online"
   },
   "dashboard": {
     "kpi_cards": "KPI Cards",
     "sections": "Sections",
-    "telemetry": "Telemetry"
-  },
-  "settings": {
-    "title": "Settings"
+    "telemetry": "Telemetry",
+    "title": "Dashboard Overview",
+    "subtitle": "Real-time telemetry and management controls for your printer fleet.",
+    "enrichSpool": "Enrich Draft Spool",
+    "newProject": "New Print Project",
+    "activeFleet": "Active Fleet",
+    "online": "Online",
+    "telemetryUptime": "100% telemetry uptime",
+    "currentJobs": "Current Print Jobs",
+    "printing": "printing",
+    "avgLoad": "Avg. load: 33% today",
+    "filamentSpools": "Filament Spools",
+    "available": "Available",
+    "draftsEnrichment": "3 Drafts need enrichment",
+    "splitCosts": "Split Costs Pending",
+    "calcRecentOrders": "Calculated from recent orders",
+    "liveTelemetry": "Live Printer Telemetry",
+    "updatesDynamic": "Updates dynamically via Paho-MQTT",
+    "nozzle": "Nozzle",
+    "bed": "Bed",
+    "activeSpool": "Active Spool",
+    "job": "Job:",
+    "estRemaining": "Est. Remaining:",
+    "recentActivity": "Recent Activity",
+    "viewAudits": "View Full System Audits",
+    "jointOrdering": "Joint Ordering Sandbox",
+    "jointOrderingDesc": "Coordinate custom split cost calculations directly on orders, referencing ownership margins and pricing details.",
+    "manageCart": "Manage Cart",
+    "backendFallback": "Backend not fully initialized or using SQLite/empty DB. Falling back to high-fidelity mock data."
   }
 }

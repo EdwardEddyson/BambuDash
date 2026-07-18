@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("common");
   const router = useRouter();
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-[#0d0f12] text-white">
       <div className="flex flex-col items-center space-y-4">
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
-        <p className="text-slate-400 font-medium animate-pulse">Loading BambuDash...</p>
+        <p className="text-slate-400 font-medium animate-pulse">{t("loadingApp")}</p>
       </div>
     </div>
   );

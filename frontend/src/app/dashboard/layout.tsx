@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { authApi } from "@/lib/api-client";
 import {
   Printer,
@@ -27,12 +28,12 @@ interface SidebarItem {
 }
 
 const navigation: SidebarItem[] = [
-  { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Filament Inventory", href: "/dashboard/inventory", icon: Layers },
-  { name: "Project Board", href: "/dashboard/projects", icon: Trello },
-  { name: "Orders & Cart", href: "/dashboard/orders", icon: ShoppingBag },
-  { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/dashboard/settings", icon: Settings },
+  { name: "navOverview", href: "/dashboard", icon: LayoutDashboard },
+  { name: "navInventory", href: "/dashboard/inventory", icon: Layers },
+  { name: "navProjects", href: "/dashboard/projects", icon: Trello },
+  { name: "navOrders", href: "/dashboard/orders", icon: ShoppingBag },
+  { name: "navAnalytics", href: "/dashboard/analytics", icon: BarChart3 },
+  { name: "navSettings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function DashboardLayout({
@@ -40,6 +41,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const t = useTranslations("navigation");
   const router = useRouter();
   const pathname = usePathname();
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -78,7 +80,7 @@ export default function DashboardLayout({
       <div className="flex min-h-screen items-center justify-center bg-[#0d0f12] text-slate-200">
         <div className="flex flex-col items-center space-y-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
-          <p className="text-slate-400 font-medium">Restoring secure session...</p>
+          <p className="text-slate-400 font-medium">{t("restoringSession")}</p>
         </div>
       </div>
     );
@@ -108,7 +110,7 @@ export default function DashboardLayout({
               </div>
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-350 bg-clip-text text-transparent">
-              BambuDash
+              {t("brandName")}
             </span>
           </div>
           {/* Close button on mobile */}
@@ -138,7 +140,7 @@ export default function DashboardLayout({
                 <Icon className={`h-5 w-5 shrink-0 transition-colors duration-250 ${
                   isActive ? "text-emerald-400" : "text-slate-500 group-hover:text-slate-300"
                 }`} />
-                <span>{item.name}</span>
+                <span>{t(item.name as any)}</span>
               </a>
             );
           })}
@@ -153,10 +155,10 @@ export default function DashboardLayout({
               </div>
               <div className="overflow-hidden">
                 <p className="text-sm font-semibold text-slate-250 truncate">
-                  {currentUser?.full_name || currentUser?.username || "Guest User"}
+                  {currentUser?.full_name || currentUser?.username || t("guestUser")}
                 </p>
                 <p className="text-xs text-slate-500 truncate">
-                  {currentUser?.email || "User Account"}
+                  {currentUser?.email || t("userAccount")}
                 </p>
               </div>
             </div>
@@ -164,7 +166,7 @@ export default function DashboardLayout({
             <button
               onClick={handleLogout}
               className="rounded-lg p-2 text-slate-500 hover:bg-rose-500/10 hover:text-rose-400 transition-colors"
-              title="Sign Out"
+              title={t("signOut")}
             >
               <LogOut className="h-5 w-5" />
             </button>
@@ -193,7 +195,7 @@ export default function DashboardLayout({
               </div>
               <input
                 type="text"
-                placeholder="Search models, projects..."
+                placeholder={t("searchPlaceholder")}
                 className="w-full rounded-xl border border-slate-900 bg-slate-950/60 py-2 pl-10 pr-4 text-xs text-slate-200 placeholder-slate-600 outline-none focus:border-emerald-500/50 transition-colors"
               />
             </div>
@@ -208,7 +210,7 @@ export default function DashboardLayout({
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </span>
-              <span className="hidden sm:inline">MQTT: Connected</span>
+              <span className="hidden sm:inline">{t("mqttConnected")}</span>
             </div>
 
             {/* Notification trigger */}
@@ -223,7 +225,7 @@ export default function DashboardLayout({
             {/* Workspace status */}
             <div className="flex items-center space-x-2 text-xs font-semibold text-slate-400">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              <span>Fleet Online</span>
+              <span>{t("fleetOnline")}</span>
             </div>
           </div>
         </header>
