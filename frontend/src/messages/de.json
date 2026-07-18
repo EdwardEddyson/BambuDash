@@ -3,23 +3,84 @@
     "loading": "Wird geladen...",
     "processing": "Wird verarbeitet...",
     "save": "Speichern",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "loadingApp": "BambuDash wird geladen..."
+  },
+  "metadata": {
+    "title": "BambuDash - 3D Drucker Management",
+    "description": "Umfassendes Managementsystem für Bambu Lab 3D-Drucker."
   },
   "login": {
     "title": "Anmelden",
-    "register": "Registrieren"
+    "register": "Registrieren",
+    "authFailed": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihre Verbindung und Zugangsdaten.",
+    "loginSuccess": "Anmeldung erfolgreich! Weiterleitung...",
+    "registerSuccess": "Registrierung erfolgreich! Sie werden angemeldet...",
+    "brandName": "BambuDash",
+    "subtitle": "Verwalten Sie Ihren 3D-Druck-Arbeitsplatz und geteilte Abrechnungen",
+    "signIn": "Anmelden",
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "z.B. Max Mustermann",
+    "emailAddress": "E-Mail-Adresse",
+    "emailPlaceholder": "z.B. max@beispiel.de",
+    "username": "Benutzername",
+    "usernamePlaceholder": "z.B. maxmuster",
+    "authCodeText": "Kennwort",
+    "authCodePlaceholder": "••••••••",
+    "createAccount": "Konto erstellen",
+    "demoTitle": "Sandbox Demo-Zugangsdaten",
+    "demoText": "Registrieren Sie einen neuen Benutzer oder melden Sie sich an, um die Benutzeroberfläche zu testen."
   },
   "navigation": {
     "sidebar": "Seitenleiste",
     "header": "Kopfzeile",
-    "status": "Status"
+    "status": "Status",
+    "navOverview": "Übersicht",
+    "navInventory": "Filament Bestand",
+    "navProjects": "Projektboard",
+    "navOrders": "Bestellungen & Warenkorb",
+    "navAnalytics": "Analysen",
+    "navSettings": "Einstellungen",
+    "restoringSession": "Sichere Sitzung wird wiederhergestellt...",
+    "brandName": "BambuDash",
+    "guestUser": "Gastbenutzer",
+    "userAccount": "Benutzerkonto",
+    "signOut": "Abmelden",
+    "searchPlaceholder": "Modelle, Projekte suchen...",
+    "mqttConnected": "MQTT: Verbunden",
+    "fleetOnline": "Flotte Online"
   },
   "dashboard": {
     "kpi_cards": "KPI Karten",
     "sections": "Abschnitte",
-    "telemetry": "Telemetrie"
-  },
-  "settings": {
-    "title": "Einstellungen"
+    "telemetry": "Telemetrie",
+    "title": "Dashboard Übersicht",
+    "subtitle": "Echtzeit-Telemetrie und Verwaltungssteuerung für Ihre Druckerflotte.",
+    "enrichSpool": "Entwurf-Spule ergänzen",
+    "newProject": "Neues Druckprojekt",
+    "activeFleet": "Aktive Flotte",
+    "online": "Online",
+    "telemetryUptime": "100% Telemetrie-Uptime",
+    "currentJobs": "Aktuelle Druckaufträge",
+    "printing": "druckt",
+    "avgLoad": "Durchschn. Auslastung: 33% heute",
+    "filamentSpools": "Filament-Spulen",
+    "available": "Verfügbar",
+    "draftsEnrichment": "3 Entwürfe benötigen Ergänzung",
+    "splitCosts": "Geteilte Kosten ausstehend",
+    "calcRecentOrders": "Aus aktuellen Bestellungen berechnet",
+    "liveTelemetry": "Live Drucker-Telemetrie",
+    "updatesDynamic": "Dynamische Updates über Paho-MQTT",
+    "nozzle": "Düse",
+    "bed": "Bett",
+    "activeSpool": "Aktive Spule",
+    "job": "Auftrag:",
+    "estRemaining": "Geschätzte verbleibende Zeit:",
+    "recentActivity": "Letzte Aktivität",
+    "viewAudits": "Vollständige System-Audits anzeigen",
+    "jointOrdering": "Gemeinsame Bestellungen Sandbox",
+    "jointOrderingDesc": "Koordinieren Sie benutzerdefinierte Kostenberechnungen direkt bei Bestellungen unter Berücksichtigung von Eigentumsanteilen und Preisdetails.",
+    "manageCart": "Warenkorb verwalten",
+    "backendFallback": "Backend nicht vollständig initialisiert oder verwendet SQLite/leere DB. Fallback auf High-Fidelity-Mock-Daten."
   }
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { apiClient } from "@/lib/api-client";
+import { useTranslations } from "next-intl";
 import {
   Printer,
   Layers,
@@ -64,6 +65,7 @@ const MOCK_ACTIVITIES = [
 ];
 
 export default function DashboardPage() {
+  const t = useTranslations("dashboard");
   const [stats, setStats] = useState({
     activePrinters: 2,
     activeJobs: 1,
@@ -89,7 +91,7 @@ export default function DashboardPage() {
           activeJobs: projRes.data?.filter((p: any) => p.status === "PRINTING").length || prev.activeJobs
         }));
       } catch (err) {
-        console.log("Backend not fully initialized or using SQLite/empty DB. Falling back to high-fidelity mock data.");
+        console.log(t("backendFallback"));
       }
     };
 
@@ -103,10 +105,10 @@ export default function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
         <div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight">
-            Dashboard Overview
+            {t("title")}
           </h2>
           <p className="text-slate-400 text-sm mt-1">
-            Real-time telemetry and management controls for your printer fleet.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -114,11 +116,11 @@ export default function DashboardPage() {
         <div className="flex flex-wrap gap-3">
           <button className="flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 px-4.5 py-2.5 text-xs font-semibold text-slate-200 hover:text-white transition-all cursor-pointer">
             <Plus className="h-4 w-4 text-emerald-400" />
-            <span>Enrich Draft Spool</span>
+            <span>{t("enrichSpool")}</span>
           </button>
           <button className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:brightness-110 px-4.5 py-2.5 text-xs font-bold text-slate-950 shadow-md shadow-emerald-500/10 transition-all cursor-pointer">
             <Play className="h-4 w-4 fill-slate-950 stroke-none" />
-            <span>New Print Project</span>
+            <span>{t("newProject")}</span>
           </button>
         </div>
       </div>
@@ -130,7 +132,7 @@ export default function DashboardPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 p-6 backdrop-blur-xl shadow-lg">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-emerald-500/5 blur-xl pointer-events-none"></div>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Active Fleet</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t("activeFleet")}</span>
             <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-400">
               <Printer className="h-5 w-5" />
             </div>
@@ -138,11 +140,11 @@ export default function DashboardPage() {
           <div className="mt-4">
             <div className="flex items-baseline space-x-1.5">
               <span className="text-3xl font-extrabold text-white">{stats.activePrinters}</span>
-              <span className="text-sm font-semibold text-slate-500">/ {printers.length} Online</span>
+              <span className="text-sm font-semibold text-slate-500">/ {printers.length} {t("online")}</span>
             </div>
             <p className="mt-1.5 flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
               <TrendingUp className="h-3.5 w-3.5" />
-              <span>100% telemetry uptime</span>
+              <span>{t("telemetryUptime")}</span>
             </p>
           </div>
         </div>
@@ -151,7 +153,7 @@ export default function DashboardPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 p-6 backdrop-blur-xl shadow-lg">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-cyan-500/5 blur-xl pointer-events-none"></div>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Current Print Jobs</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t("currentJobs")}</span>
             <div className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-400">
               <Activity className="h-5 w-5" />
             </div>
@@ -159,10 +161,10 @@ export default function DashboardPage() {
           <div className="mt-4">
             <div className="flex items-baseline space-x-1.5">
               <span className="text-3xl font-extrabold text-white">{stats.activeJobs}</span>
-              <span className="text-sm font-semibold text-slate-500">printing</span>
+              <span className="text-sm font-semibold text-slate-500">{t("printing")}</span>
             </div>
             <p className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
-              <span>Avg. load: 33% today</span>
+              <span>{t("avgLoad")}</span>
             </p>
           </div>
         </div>
@@ -171,7 +173,7 @@ export default function DashboardPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 p-6 backdrop-blur-xl shadow-lg">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-purple-500/5 blur-xl pointer-events-none"></div>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Filament Spools</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t("filamentSpools")}</span>
             <div className="rounded-xl bg-purple-500/10 p-2.5 text-purple-400">
               <Layers className="h-5 w-5" />
             </div>
@@ -179,10 +181,10 @@ export default function DashboardPage() {
           <div className="mt-4">
             <div className="flex items-baseline space-x-1.5">
               <span className="text-3xl font-extrabold text-white">{stats.filamentCount}</span>
-              <span className="text-sm font-semibold text-slate-500">Available</span>
+              <span className="text-sm font-semibold text-slate-500">{t("available")}</span>
             </div>
             <p className="mt-1.5 flex items-center gap-1.5 text-xs text-purple-400 font-medium">
-              <span>3 Drafts need enrichment</span>
+              <span>{t("draftsEnrichment")}</span>
             </p>
           </div>
         </div>
@@ -191,7 +193,7 @@ export default function DashboardPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 p-6 backdrop-blur-xl shadow-lg">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-yellow-500/5 blur-xl pointer-events-none"></div>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Split Costs Pending</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t("splitCosts")}</span>
             <div className="rounded-xl bg-yellow-500/10 p-2.5 text-yellow-400">
               <DollarSign className="h-5 w-5" />
             </div>
@@ -201,7 +203,7 @@ export default function DashboardPage() {
               <span className="text-3xl font-extrabold text-white">{stats.pendingSplitCosts.toFixed(2)} €</span>
             </div>
             <p className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
-              <span>Calculated from recent orders</span>
+              <span>{t("calcRecentOrders")}</span>
             </p>
           </div>
         </div>
@@ -217,9 +219,9 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2.5">
                 <Cpu className="h-5 w-5 text-emerald-400" />
-                <h3 className="text-lg font-bold text-white">Live Printer Telemetry</h3>
+                <h3 className="text-lg font-bold text-white">{t("liveTelemetry")}</h3>
               </div>
-              <span className="text-xs text-slate-500">Updates dynamically via Paho-MQTT</span>
+              <span className="text-xs text-slate-500">{t("updatesDynamic")}</span>
             </div>
 
             {/* Printers Loop */}
@@ -264,15 +266,15 @@ export default function DashboardPage() {
                     {printer.status !== "OFFLINE" && (
                       <div className="flex items-center gap-6 text-xs text-slate-400 sm:justify-end">
                         <div className="flex flex-col sm:items-end">
-                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">Nozzle</span>
+                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">{t("nozzle")}</span>
                           <span className="font-semibold text-slate-200 mt-0.5">{printer.tempNozzle} °C</span>
                         </div>
                         <div className="flex flex-col sm:items-end">
-                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">Bed</span>
+                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">{t("bed")}</span>
                           <span className="font-semibold text-slate-200 mt-0.5">{printer.tempBed} °C</span>
                         </div>
                         <div className="flex flex-col sm:items-end hidden sm:flex">
-                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">Active Spool</span>
+                          <span className="text-2xs font-semibold text-slate-550 uppercase tracking-wider">{t("activeSpool")}</span>
                           <span className="font-semibold text-emerald-400 mt-0.5">{printer.amsStatus}</span>
                         </div>
                       </div>
@@ -284,8 +286,8 @@ export default function DashboardPage() {
                   {printer.status === "PRINTING" && (
                     <div className="mt-5 border-t border-slate-900/60 pt-4.5">
                       <div className="flex items-center justify-between text-xs font-medium mb-2">
-                        <span className="text-slate-400 truncate max-w-[280px]">Job: {printer.jobName}</span>
-                        <span className="text-slate-500">Est. Remaining: <strong className="text-emerald-400 font-semibold">{printer.timeLeft}</strong></span>
+                        <span className="text-slate-400 truncate max-w-[280px]">{t("job")} {printer.jobName}</span>
+                        <span className="text-slate-500">{t("estRemaining")} <strong className="text-emerald-400 font-semibold">{printer.timeLeft}</strong></span>
                       </div>
 
                       {/* Bar indicator */}
@@ -314,7 +316,7 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-2.5">
                   <Activity className="h-5 w-5 text-cyan-400" />
-                  <h3 className="text-lg font-bold text-white">Recent Activity</h3>
+                  <h3 className="text-lg font-bold text-white">{t("recentActivity")}</h3>
                 </div>
               </div>
 
@@ -342,7 +344,7 @@ export default function DashboardPage() {
                 href="/dashboard/analytics"
                 className="group flex items-center justify-between text-xs font-bold text-slate-400 hover:text-emerald-400 transition-colors"
               >
-                <span>View Full System Audits</span>
+                <span>{t("viewAudits")}</span>
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
             </div>
@@ -353,16 +355,16 @@ export default function DashboardPage() {
             <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full bg-emerald-500/5 blur-xl pointer-events-none"></div>
             <div className="flex items-center space-x-2 text-emerald-400 mb-2">
               <ShoppingBag className="h-5 w-5" />
-              <h4 className="font-bold text-sm text-slate-200">Joint Ordering Sandbox</h4>
+              <h4 className="font-bold text-sm text-slate-200">{t("jointOrdering")}</h4>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
-              Coordinate custom split cost calculations directly on orders, referencing ownership margins and pricing details.
+              {t("jointOrderingDesc")}
             </p>
             <a
               href="/dashboard/orders"
               className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 px-3.5 py-2 text-2xs font-semibold text-emerald-400 border border-slate-800"
             >
-              <span>Manage Cart</span>
+              <span>{t("manageCart")}</span>
               <ExternalLink className="h-3 w-3" />
             </a>
           </div>
