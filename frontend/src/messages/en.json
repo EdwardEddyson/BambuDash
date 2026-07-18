@@ -82,5 +82,21 @@
     "jointOrderingDesc": "Coordinate custom split cost calculations directly on orders, referencing ownership margins and pricing details.",
     "manageCart": "Manage Cart",
     "backendFallback": "Backend not fully initialized or using SQLite/empty DB. Falling back to high-fidelity mock data."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account and preferences.",
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Choose your preferred language for the dashboard.",
+    "displayLanguage": "Display Language",
+    "displayLanguageDesc": "Select English or German.",
+    "english": "English",
+    "german": "Deutsch",
+    "profileSettings": "Profile Settings",
+    "profileDescription": "Manage your personal information.",
+    "profileFuture": "Profile editing will be available in a future update.",
+    "notifications": "Notifications",
+    "notificationsDescription": "Configure your alert preferences.",
+    "notificationsFuture": "Notification settings will be available in a future update."
   }
 }

@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { User, Bell, Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function SettingsPage() {
+  const t = useTranslations("settings");
   const [locale, setLocale] = useState("en");
 
   useEffect(() => {
@@ -29,8 +31,8 @@ export default function SettingsPage() {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-100">Settings</h1>
-        <p className="text-slate-400 mt-1">Manage your account and preferences.</p>
+        <h1 className="text-2xl font-bold text-slate-100">{t("title")}</h1>
+        <p className="text-slate-400 mt-1">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
@@ -41,17 +43,17 @@ export default function SettingsPage() {
               <Globe className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-200">Language & Region</h2>
-              <p className="text-sm text-slate-500">Choose your preferred language for the dashboard.</p>
+              <h2 className="text-lg font-semibold text-slate-200">{t("languageAndRegion")}</h2>
+              <p className="text-sm text-slate-500">{t("languageDescription")}</p>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl bg-slate-900/50 p-4 border border-slate-800/50">
             <div>
               <label htmlFor="language-select" className="block text-sm font-medium text-slate-300">
-                Display Language
+                {t("displayLanguage")}
               </label>
-              <p className="text-xs text-slate-500 mt-0.5">Select English or German.</p>
+              <p className="text-xs text-slate-500 mt-0.5">{t("displayLanguageDesc")}</p>
             </div>
             <div className="relative">
               <select
@@ -60,8 +62,8 @@ export default function SettingsPage() {
                 onChange={handleLanguageChange}
                 className="appearance-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 pr-10 text-sm font-medium text-slate-200 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer min-w-[160px] transition-colors"
               >
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
+                <option value="en">{t("english")}</option>
+                <option value="de">{t("german")}</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -79,12 +81,12 @@ export default function SettingsPage() {
               <User className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-200">Profile Settings</h2>
-              <p className="text-sm text-slate-500">Manage your personal information.</p>
+              <h2 className="text-lg font-semibold text-slate-200">{t("profileSettings")}</h2>
+              <p className="text-sm text-slate-500">{t("profileDescription")}</p>
             </div>
           </div>
           <div className="rounded-xl border border-slate-800/50 border-dashed p-8 text-center bg-slate-900/20">
-            <p className="text-slate-500 text-sm">Profile editing will be available in a future update.</p>
+            <p className="text-slate-500 text-sm">{t("profileFuture")}</p>
           </div>
         </section>
 
@@ -95,12 +97,12 @@ export default function SettingsPage() {
               <Bell className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-200">Notifications</h2>
-              <p className="text-sm text-slate-500">Configure your alert preferences.</p>
+              <h2 className="text-lg font-semibold text-slate-200">{t("notifications")}</h2>
+              <p className="text-sm text-slate-500">{t("notificationsDescription")}</p>
             </div>
           </div>
           <div className="rounded-xl border border-slate-800/50 border-dashed p-8 text-center bg-slate-900/20">
-            <p className="text-slate-500 text-sm">Notification settings will be available in a future update.</p>
+            <p className="text-slate-500 text-sm">{t("notificationsFuture")}</p>
           </div>
         </section>
       </div>

@@ -82,5 +82,21 @@
     "jointOrderingDesc": "Koordinieren Sie benutzerdefinierte Kostenberechnungen direkt bei Bestellungen unter Berücksichtigung von Eigentumsanteilen und Preisdetails.",
     "manageCart": "Warenkorb verwalten",
     "backendFallback": "Backend nicht vollständig initialisiert oder verwendet SQLite/leere DB. Fallback auf High-Fidelity-Mock-Daten."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Verwalten Sie Ihr Konto und Ihre Einstellungen.",
+    "languageAndRegion": "Sprache & Region",
+    "languageDescription": "Wählen Sie Ihre bevorzugte Sprache für das Dashboard.",
+    "displayLanguage": "Anzeigesprache",
+    "displayLanguageDesc": "Wählen Sie Englisch oder Deutsch.",
+    "english": "English",
+    "german": "Deutsch",
+    "profileSettings": "Profileinstellungen",
+    "profileDescription": "Verwalten Sie Ihre persönlichen Daten.",
+    "profileFuture": "Die Profilbearbeitung wird in einem zukünftigen Update verfügbar sein.",
+    "notifications": "Benachrichtigungen",
+    "notificationsDescription": "Konfigurieren Sie Ihre Benachrichtigungseinstellungen.",
+    "notificationsFuture": "Benachrichtigungseinstellungen werden in einem zukünftigen Update verfügbar sein."
   }
 }
