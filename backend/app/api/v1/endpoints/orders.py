@@ -7,7 +7,7 @@ from app.db.session import get_db
 from app.schemas.order import OrderRead, OrderCreate, OrderItemCreate, OrderItemRead, CartItemUpdate
 from app.crud import crud_order
 from app.api.deps import get_current_user
-from app.models.base_models import User
+from app.models.base_models import User, UserRole
 from app.services.import_service import import_orders_from_csv
 
 router = APIRouter()
@@ -126,6 +126,8 @@ def deliver_order(
     order = crud_order.get(db=db, id=order_id)
     if not order:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found.")
+    if not (current_user.role == UserRole.ADMIN or current_user.role == "admin" or current_user.id == order.creator_id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to deliver this order.")
     try:
         return crud_order.deliver_order(db=db, order=order)
     except ValueError as e:

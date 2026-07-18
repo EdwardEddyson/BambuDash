@@ -1,7 +1,7 @@
 # backend/app/api/v1/api.py
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, users, filaments, projects, orders, analytics, store
+from app.api.v1.endpoints import auth, users, filaments, projects, orders, analytics, store, makerworld
 
 api_router = APIRouter()
 
@@ -13,3 +13,4 @@ api_router.include_router(projects.router, prefix="/projects", tags=["Projects"]
 api_router.include_router(orders.router, prefix="/orders", tags=["Orders"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytics"])
 api_router.include_router(store.router, prefix="/store", tags=["Bambu Store"])
+api_router.include_router(makerworld.router, prefix="/makerworld", tags=["MakerWorld"])

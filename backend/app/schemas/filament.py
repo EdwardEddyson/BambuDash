@@ -9,6 +9,10 @@ class FilamentBase(SQLModel):
     color_hex: str
     remaining_weight_g: float
     status: FilamentStatus
+    location: Optional[str] = None
+    product_slug: Optional[str] = None
+    sku: Optional[str] = None
+    variant_title: Optional[str] = None
 
 # Properties to receive on creation
 class FilamentCreate(FilamentBase):
@@ -20,6 +24,10 @@ class FilamentUpdate(SQLModel):
     color_hex: Optional[str] = None
     remaining_weight_g: Optional[float] = None
     status: Optional[FilamentStatus] = None
+    location: Optional[str] = None
+    product_slug: Optional[str] = None
+    sku: Optional[str] = None
+    variant_title: Optional[str] = None
 
 # Properties to return to client
 class FilamentRead(FilamentBase):
@@ -34,3 +42,7 @@ class FilamentEnrichment(SQLModel):
     price: float
     owner_id: int
     spool_type: SpoolType = SpoolType.SPOOL
+    location: Optional[str] = None
+    product_slug: Optional[str] = None
+    sku: Optional[str] = None
+    variant_title: Optional[str] = None
